@@ -70,7 +70,7 @@ My personal modified Vagrant lamp file based on scotch box
 
 * Download and Install [Vagrant][3]
 * Download and Install [VirtualBox][4]
-* Clone the Scotch Box [GitHub Repository](https://github.com/scotch-io/scotch-box)
+* Clone the Scotch Box [GitHub Repository](https://github.com/ivcreative/Vagrant-scotch-lamp.git)
 * Run ``` vagrant up ```
 * Access Your Project at  [http://192.168.33.10/][14]
 
