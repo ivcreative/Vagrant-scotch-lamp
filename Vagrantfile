@@ -10,6 +10,11 @@ Vagrant.configure("2") do |config|
     config.vm.hostname = "scotchbox"
     config.vm.synced_folder ".", "/var/www", :nfs => { :mount_options => ["dmode=777","fmode=666"] }
 
+        config.vm.provider "virtualbox" do |v|
+            v.memory = 2048
+            v.cpus = 2
+        end    
+
 
     config.vm.provision "shell", inline: <<-SHELL
 
@@ -37,15 +42,12 @@ Vagrant.configure("2") do |config|
             DOMAIN=${DOMAINS[$i]}
 
             echo "Creating directory for $DOMAIN..."
-            mkdir -p /var/www/$DOMAIN/public
-            mkdir -p /var/www/$DOMAIN/db
+            sudo mkdir -p /var/www/$DOMAIN/public
+            sudo mkdir -p /var/www/$DOMAIN/db
 
-            ## Not fancy but at least its creating the backups
-            echo "create empty dump"
-            touch "/var/www/$DOMAIN/db/dump_$DOMAIN.sql"
 
             echo "Database backup for $DOMAIN"
-            mysqldump -u root -proot $DOMAIN > /var/www/$DOMAIN/db/dump_$DOMAIN.sql
+            sudo mysqldump -u root -proot $DOMAIN > /var/www/$DOMAIN/db/$DOMAIN_$(date +"%Y-%m-%d").sql
 
             echo "Creating vhost config for $DOMAIN..."
             sudo cp /etc/apache2/sites-available/scotchbox.local.conf /etc/apache2/sites-available/$DOMAIN.conf
@@ -57,13 +59,20 @@ Vagrant.configure("2") do |config|
             echo "Enabling $DOMAIN. Will probably tell you to restart Apache..."
             sudo a2ensite $DOMAIN.conf
 
-            echo "So let's restart apache..."
-            sudo service apache2 restart
+            
 
 
 
         done
 
+        echo "So let's restart apache..."
+        sudo service apache2 restart
+
+        echo "Restart Mysql"
+        sudo service mysql restart
+
     SHELL
+
+    
 
 end
