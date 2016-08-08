@@ -7,7 +7,18 @@ My personal modified Vagrant lamp file based on scotch box
 
 - Multisite settings ready
 - Folder db for database
-- Mysql dump backups on each provision
+- Mysql dump backups on each provision by date
+
+## Quick setup
+
+- Add projects on vagrant file at line 25 each project should be added with quots, example: "project1.dev" "yourdomain.dev" "projectnamex.dev" and so on.
+- After adding a project run vagrant up then vagrant provision so it creats the necesary folders.
+- Add your new project domain to the host list of your system, on a windows machine this is located at C:\Windows\System32\drivers\etc\hosts remeber this file can only be edited by admin or root. Host should start with the box ip 192.168.33.10 then your project domain an example of how it should look:
+ 
+```192.168.33.10 project1.dev
+192.168.33.10 domainxyz.dev
+192.168.33.10 mydomainname.dev
+192.168.33.10 project201.dev```
 
 
 ### System Stuff
